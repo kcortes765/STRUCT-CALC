@@ -25,19 +25,11 @@ app = FastAPI(
 
 # Configurar CORS para permitir requests desde orígenes específicos
 # Usar variable de entorno ALLOWED_ORIGINS para dominios adicionales (separados por comas)
-allowed_origins = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-]
-
-# Agregar orígenes adicionales desde variable de entorno
-env_origins = os.getenv("ALLOWED_ORIGINS", "")
-if env_origins:
-    allowed_origins.extend([origin.strip() for origin in env_origins.split(",")])
-
+# CORS: Permitir todos los orígenes en producción (API pública)
+# Para mayor seguridad, usar ALLOWED_ORIGINS env var con dominios específicos
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=["*"],  # Permite todos los orígenes
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
